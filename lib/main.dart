@@ -518,7 +518,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         drawer: widgetDrawer(),
-        body: widgetGridView(),
+        body: TabBarView(children: [
+          widgetGridView(),
+          Center(child: Text('belum ada fitur')),
+          Center(child: Text('belum ada fitur')),
+          Center(child: Text('belum ada fitur'))
+        ]),
       ),
     );
   }
