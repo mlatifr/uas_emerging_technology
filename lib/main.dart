@@ -482,19 +482,50 @@ class _MyHomePageState extends State<MyHomePage> {
       length: 4,
       child: Scaffold(
           appBar: AppBar(
-            title: Text("My Movie App"),
+            title: Text("Kumpulan Resep Pak Latif"),
             bottom: TabBar(
               tabs: [
-                Tab(icon: Icon(Icons.movie)),
-                Tab(icon: Icon(Icons.theaters)),
-                Tab(icon: Icon(Icons.shopping_cart)),
-                Tab(icon: Icon(Icons.person)),
+                Tab(icon: Icon(Icons.fastfood_outlined)),
+                Tab(icon: Icon(Icons.layers_clear)),
+                Tab(icon: Icon(Icons.layers_clear)),
+                Tab(icon: Icon(Icons.layers_clear)),
               ],
             ),
           ), //body nanti ditaruh sini
 
           drawer: widgetDrawer(),
-          body: Scaffold()),
+          body: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, i) {
+                return GridView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: 12,
+                    gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                          elevation: 5,
+                          margin: EdgeInsets.all(5),
+                          child: Column(children: <Widget>[
+                            GestureDetector(
+                                onTap: () {
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             DetailMovie(index)));
+                                },
+                                child: Text("data")
+                                // Image.network(
+                                //     'http://ubaya.prototipe.net/emertech160416073/1.png',
+                                //     // movies[index].photo,
+                                //     height: 150)
+                                ),
+                            Text(movies[index].title)
+                          ]));
+                    });
+              })),
     );
   }
 }
