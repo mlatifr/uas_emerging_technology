@@ -470,62 +470,56 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget widgetGridView() {
+    return GridView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: 22,
+        gridDelegate:
+            new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+              elevation: 4,
+              margin: EdgeInsets.all(4),
+              child: Column(children: <Widget>[
+                GestureDetector(
+                    onTap: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) =>
+                      //             DetailMovie(index)));
+                    },
+                    child: Text("data ${index + 1}")
+                    // Image.network(
+                    //     'http://ubaya.prototipe.net/emertech160416073/1.png',
+                    //     // movies[index].photo,
+                    //     height: 150)
+                    ),
+              ]));
+        });
+    ;
+  }
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-          appBar: AppBar(
-            title: Text("Kumpulan Resep Pak Latif"),
-            bottom: TabBar(
-              tabs: [
-                Tab(icon: Icon(Icons.fastfood_outlined)),
-                Tab(icon: Icon(Icons.layers_clear)),
-                Tab(icon: Icon(Icons.layers_clear)),
-                Tab(icon: Icon(Icons.layers_clear)),
-              ],
-            ),
-          ), //body nanti ditaruh sini
-
-          drawer: widgetDrawer(),
-          body: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, i) {
-                return GridView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: 12,
-                    gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                          elevation: 5,
-                          margin: EdgeInsets.all(5),
-                          child: Column(children: <Widget>[
-                            GestureDetector(
-                                onTap: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             DetailMovie(index)));
-                                },
-                                child: Text("data")
-                                // Image.network(
-                                //     'http://ubaya.prototipe.net/emertech160416073/1.png',
-                                //     // movies[index].photo,
-                                //     height: 150)
-                                ),
-                            Text(movies[index].title)
-                          ]));
-                    });
-              })),
+        appBar: AppBar(
+          title: Text("Kumpulan Resep Pak Latif"),
+          bottom: TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.fastfood_outlined)),
+              Tab(icon: Icon(Icons.layers_clear)),
+              Tab(icon: Icon(Icons.layers_clear)),
+              Tab(icon: Icon(Icons.layers_clear)),
+            ],
+          ),
+        ),
+        drawer: widgetDrawer(),
+        body: widgetGridView(),
+      ),
     );
   }
 }
