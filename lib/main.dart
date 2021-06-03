@@ -490,12 +490,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       //         builder: (context) =>
                       //             DetailMovie(index)));
                     },
-                    child: Text("data ${index + 1}")
-                    // Image.network(
-                    //     'http://ubaya.prototipe.net/emertech160416073/1.png',
-                    //     // movies[index].photo,
-                    //     height: 150)
-                    ),
+                    child: Column(
+                      children: [
+                        Text("data ${index + 1}"),
+                        Image.network(
+                            'http://ubaya.prototipe.net/daniel/blank.png',
+                            height: 150)
+                      ],
+                    )),
               ]));
         });
     ;
