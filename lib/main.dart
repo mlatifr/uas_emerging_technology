@@ -152,8 +152,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => DetailMasakan(
-                                    indexMasakan: listMasakans[index].id,
-                                  )));
+                                  namaMasakan: listMasakans[index].nama,
+                                  indexMasakan: listMasakans[index].id,
+                                  url_masakan: listMasakans[index].url_foto)));
                     },
                     child: Column(
                       children: [

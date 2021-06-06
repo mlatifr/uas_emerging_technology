@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'login.dart';
@@ -20,8 +21,10 @@ class MasakanBahanLangkah {
 }
 
 class DetailMasakan extends StatefulWidget {
-  final indexMasakan;
-  const DetailMasakan({Key key, this.indexMasakan}) : super(key: key);
+  final namaMasakan, indexMasakan, url_masakan;
+  const DetailMasakan(
+      {Key key, this.namaMasakan, this.indexMasakan, this.url_masakan})
+      : super(key: key);
 
   @override
   _DetailMasakanState createState() => _DetailMasakanState();
@@ -65,6 +68,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
   void initState() {
     super.initState();
     print("ini widget idx masakan id : ${widget.indexMasakan}");
+    listMasakans.clear();
     bacaData();
   }
 
@@ -86,11 +90,24 @@ class _DetailMasakanState extends State<DetailMasakan> {
         body: SingleChildScrollView(
             child: Column(
           children: [
-            Divider(),
+            // Divider(),
+            Image.network("${widget.url_masakan}",
+                // height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width),
             Divider(
-              height: 150,
-              color: Colors.white,
+              // height: 150,
+              color: Colors.blue,
             ),
+            Padding(
+                padding: EdgeInsets.all(1),
+                child: TextFormField(
+                  enabled: false,
+                  textAlign: TextAlign.center,
+                  initialValue: widget.namaMasakan,
+                  decoration: const InputDecoration(
+                    labelText: 'Nama',
+                  ),
+                )),
           ],
         )));
   }
