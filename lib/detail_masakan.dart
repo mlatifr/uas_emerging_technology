@@ -56,7 +56,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
             "http://mlatifr.southeastasia.cloudapp.azure.com/emertech/uas_kuremas/get_masakan_resep.php"),
         body: {'id_masakan': widget.indexMasakan.toString()});
     if (response.statusCode == 200) {
-      print("print response body : ${response.body}");
+      print("print response body : ${response.body} ${widget.indexMasakan}");
       return response.body;
     } else {
       throw Exception('Failed to read API');
@@ -99,13 +99,35 @@ class _DetailMasakanState extends State<DetailMasakan> {
               color: Colors.blue,
             ),
             Padding(
-                padding: EdgeInsets.all(1),
+                padding: EdgeInsets.all(10),
                 child: TextFormField(
                   enabled: false,
                   textAlign: TextAlign.center,
                   initialValue: widget.namaMasakan,
                   decoration: const InputDecoration(
                     labelText: 'Nama',
+                  ),
+                )),
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  maxLines: 10,
+                  enabled: false,
+                  textAlign: TextAlign.center,
+                  initialValue: listMasakans[0].bahan,
+                  decoration: const InputDecoration(
+                    labelText: 'Bahan',
+                  ),
+                )),
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  maxLines: 10,
+                  enabled: false,
+                  textAlign: TextAlign.center,
+                  initialValue: listMasakans[0].langkah,
+                  decoration: const InputDecoration(
+                    labelText: 'langkah',
                   ),
                 )),
           ],
