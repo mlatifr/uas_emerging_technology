@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,7 +54,52 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+class Masakan {
+  int id;
+  String nama, url_foto;
+  Masakan({this.id, this.nama, this.url_foto});
+  factory Masakan.fromJson(Map<String, dynamic> json) {
+    return new Masakan(
+      id: json['id'],
+      nama: json['nama'],
+      url_foto: json['url_foto'],
+    );
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage> {
+  List listMasakans = [];
+  // tahap 2 API 1
+  bacaData() {
+    if (listMasakans.isNotEmpty) listMasakans.clear();
+    Future<String> data = fetchData();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      // print("print value API 1 = ${value} \n \n");
+      for (var i in json['data']) {
+        Masakan mskn = Masakan.fromJson(i);
+        listMasakans.add(mskn);
+      }
+      setState(() {});
+    });
+  }
+
+  // tahap 3 API 1
+  //meminta POST
+  Future<String> fetchData() async {
+    final response = await http.post(
+        Uri.parse(
+            "http://mlatifr.southeastasia.cloudapp.azure.com/emertech/uas_kuremas/get_list_masakan_nama.php"),
+        body: {});
+    if (response.statusCode == 200) {
+      print("print response body : ${response.body}");
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
   Widget widgetDrawer() {
     return Drawer(
       child: ListView(
@@ -90,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return GridView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: 22,
+        itemCount: listMasakans.length,
         gridDelegate:
             new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (BuildContext context, int index) {
@@ -108,15 +155,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                     child: Column(
                       children: [
-                        Text("data ${index + 1}"),
-                        Image.network(
-                            'http://ubaya.prototipe.net/daniel/blank.png',
-                            height: 150)
+                        Text("${listMasakans[index].nama}"),
+                        Image.network("${listMasakans[index].url_foto}",
+                            height: MediaQuery.of(context).size.height * 0.2,
+                            width: MediaQuery.of(context).size.width * 0.2)
                       ],
                     )),
               ]));
         });
     ;
+  }
+
+  @override
+  // untuk membaca data diawal build page nya
+  void initState() {
+    super.initState();
+    bacaData();
   }
 
   @override
