@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'detail_masakan.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -147,11 +148,12 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(children: <Widget>[
                 GestureDetector(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //             DetailMovie(index)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailMasakan(
+                                    indexMasakan: listMasakans[index].id,
+                                  )));
                     },
                     child: Column(
                       children: [
