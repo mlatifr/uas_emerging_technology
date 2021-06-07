@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'detail_masakan.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// String tulisan = "";
 
-String tulisan = "";
 String user_aktif = "";
-bool pembuka = true;
+// bool pembuka = true;
 
 Future<String> cekLogin() async {
   try {
@@ -57,18 +57,20 @@ class MyHomePage extends StatefulWidget {
 
 class Masakan {
   int id;
-  String nama, url_foto;
-  Masakan({this.id, this.nama, this.url_foto});
+  String nama, url_foto, bahan;
+  Masakan({this.id, this.nama, this.url_foto, this.bahan});
   factory Masakan.fromJson(Map<String, dynamic> json) {
     return new Masakan(
       id: json['id'],
       nama: json['nama'],
       url_foto: json['url_foto'],
+      bahan: json['bahan'],
     );
   }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String _txtcari = '';
   List listMasakans = [];
   // tahap 2 API 1
   bacaData() {
@@ -93,6 +95,36 @@ class _MyHomePageState extends State<MyHomePage> {
         Uri.parse(
             "http://mlatifr.southeastasia.cloudapp.azure.com/emertech/uas_kuremas/get_list_masakan_nama.php"),
         body: {});
+    if (response.statusCode == 200) {
+      print("print response body : ${response.body}");
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+  bacaDataNama() {
+    if (listMasakans.isNotEmpty) listMasakans.clear();
+    Future<String> data = fetchDataNama();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      // print("print value API 1 = ${value} \n \n");
+      for (var i in json['data']) {
+        Masakan mskn = Masakan.fromJson(i);
+        listMasakans.add(mskn);
+      }
+      setState(() {});
+    });
+  }
+
+  // tahap 3 API 1
+  //meminta POST
+  Future<String> fetchDataNama() async {
+    final response = await http.post(
+        Uri.parse(
+            "http://mlatifr.southeastasia.cloudapp.azure.com/emertech/uas_kuremas/get_list_masakan_cari_nama_bahan.php"),
+        body: {'cari': _txtcari});
     if (response.statusCode == 200) {
       print("print response body : ${response.body}");
       return response.body;
@@ -135,37 +167,58 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget widgetGridView() {
-    return GridView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: listMasakans.length,
-        gridDelegate:
-            new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-              elevation: 4,
-              margin: EdgeInsets.all(4),
-              child: Column(children: <Widget>[
-                GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DetailMasakan(
-                                  namaMasakan: listMasakans[index].nama,
-                                  indexMasakan: listMasakans[index].id,
-                                  url_masakan: listMasakans[index].url_foto)));
-                    },
-                    child: Column(
-                      children: [
-                        Text("${listMasakans[index].nama}"),
-                        Image.network("${listMasakans[index].url_foto}",
-                            height: MediaQuery.of(context).size.height * 0.2,
-                            width: MediaQuery.of(context).size.width * 0.2)
-                      ],
-                    )),
-              ]));
-        });
+    return Column(
+      children: [
+        TextFormField(
+          decoration: const InputDecoration(
+            icon: Icon(Icons.search),
+            labelText: 'Resep mengandung kata:',
+          ),
+          onChanged: (value) {
+            _txtcari = value;
+            bacaDataNama();
+          },
+          onFieldSubmitted: (value) {
+            _txtcari = value;
+            bacaDataNama();
+            print(_txtcari);
+          },
+        ),
+        GridView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: listMasakans.length,
+            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2),
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                  elevation: 4,
+                  margin: EdgeInsets.all(4),
+                  child: Column(children: <Widget>[
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetailMasakan(
+                                      namaMasakan: listMasakans[index].nama,
+                                      indexMasakan: listMasakans[index].id,
+                                      url_masakan:
+                                          listMasakans[index].url_foto)));
+                        },
+                        child: Column(
+                          children: [
+                            Text("${listMasakans[index].nama}"),
+                            Image.network("${listMasakans[index].url_foto}",
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
+                                width: MediaQuery.of(context).size.width * 0.2)
+                          ],
+                        )),
+                  ]));
+            }),
+      ],
+    );
     ;
   }
 
