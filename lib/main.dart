@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'detail_masakan.dart';
+import 'input_masakan.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // String tulisan = "";
@@ -232,26 +233,35 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 1,
       child: Scaffold(
         appBar: AppBar(
           title: Text("Kumpulan Resep Pak Latif"),
           bottom: TabBar(
             tabs: [
               Tab(icon: Icon(Icons.fastfood_outlined)),
-              Tab(icon: Icon(Icons.layers_clear)),
-              Tab(icon: Icon(Icons.layers_clear)),
-              Tab(icon: Icon(Icons.layers_clear)),
+              // Tab(icon: Icon(Icons.layers_clear)),
+              // Tab(icon: Icon(Icons.layers_clear)),
+              // Tab(icon: Icon(Icons.layers_clear)),
             ],
           ),
         ),
         drawer: widgetDrawer(),
-        body: TabBarView(children: [
-          widgetGridView(),
-          Center(child: Text('belum ada fitur')),
-          Center(child: Text('belum ada fitur')),
-          Center(child: Text('belum ada fitur'))
-        ]),
+        body: widgetGridView(),
+        // TabBarView(children: [
+        //   widgetGridView(),
+        //   Center(child: Text('belum ada fitur')),
+        //   Center(child: Text('belum ada fitur')),
+        //   Center(child: Text('belum ada fitur'))
+        // ]),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => InpurMasakan()));
+          },
+          child: const Icon(Icons.add_circle),
+          backgroundColor: Colors.blue,
+        ),
       ),
     );
   }
