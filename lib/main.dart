@@ -183,39 +183,53 @@ class _MyHomePageState extends State<MyHomePage> {
             print(_txtcari);
           },
         ),
-        GridView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: listMasakans.length,
-            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                  elevation: 4,
-                  margin: EdgeInsets.all(4),
-                  child: Column(children: <Widget>[
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DetailMasakan(
-                                      namaMasakan: listMasakans[index].nama,
-                                      indexMasakan: listMasakans[index].id,
-                                      url_masakan:
-                                          listMasakans[index].url_foto)));
-                        },
-                        child: Column(
-                          children: [
-                            Text("${listMasakans[index].nama}"),
-                            Image.network("${listMasakans[index].url_foto}",
-                                height:
-                                    MediaQuery.of(context).size.height * 0.2,
-                                width: MediaQuery.of(context).size.width * 0.2)
-                          ],
-                        )),
-                  ]));
-            }),
+        ListView(
+          shrinkWrap: true,
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.739,
+              color: Colors.green,
+              child: GridView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: listMasakans.length,
+                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                        elevation: 4,
+                        margin: EdgeInsets.all(4),
+                        child: Column(children: <Widget>[
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailMasakan(
+                                            namaMasakan:
+                                                listMasakans[index].nama,
+                                            indexMasakan:
+                                                listMasakans[index].id,
+                                            url_masakan:
+                                                listMasakans[index].url_foto)));
+                              },
+                              child: Column(
+                                children: [
+                                  Text("${listMasakans[index].nama}"),
+                                  Image.network(
+                                      "${listMasakans[index].url_foto}",
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2)
+                                ],
+                              )),
+                        ]));
+                  }),
+            ),
+          ],
+        ),
       ],
     );
     ;
