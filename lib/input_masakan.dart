@@ -26,10 +26,11 @@ class _InpurMasakanState extends State<InpurMasakan> {
         ),
         body: {
           // 'movie_id': widget.movie_id.toString(),
-          'nama_masakan': 'nama masakan',
-          'image': base64Image,
+          'nama_masakan': namaMakanan,
+          'img': base64Image,
         });
     if (response2.statusCode == 200) {
+      print('respone 2 body: ${response2.body}');
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(response2.body)));
     }
@@ -109,6 +110,10 @@ class _InpurMasakanState extends State<InpurMasakan> {
         });
   }
 
+  String namaMakanan, bahan, langkah;
+  TextEditingController _namaMakanan,
+      _bahan,
+      _langkah = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,68 +129,83 @@ class _InpurMasakanState extends State<InpurMasakan> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-                padding: EdgeInsets.all(2),
-                child: TextFormField(
-                  enabled: true,
-                  textAlign: TextAlign.center,
-                  // initialValue: widget.namaMasakan,
-                  decoration: const InputDecoration(
-                    labelText: 'Nama',
-                  ),
-                )),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: GestureDetector(
-                onTap: () {
-                  _showPicker(context);
-                },
-                child: _image != null
-                    ? Image.file(_image)
-                    : Image.network(
-                        "http://ubaya.prototipe.net/daniel/blank.png"),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                  padding: EdgeInsets.all(2),
+                  child: TextFormField(
+                    enabled: true,
+                    textAlign: TextAlign.center,
+                    // initialValue: widget.namaMasakan,
+                    decoration: const InputDecoration(
+                      labelText: 'Nama',
+                    ),
+                    onChanged: (value) {
+                      namaMakanan = value;
+                    },
+                    controller: _namaMakanan,
+                  )),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: GestureDetector(
+                  onTap: () {
+                    _showPicker(context);
+                  },
+                  child: _image != null
+                      ? Image.file(_image)
+                      : Image.network(
+                          "http://ubaya.prototipe.net/daniel/blank.png"),
+                ),
               ),
-            ),
-            Padding(
-                padding: EdgeInsets.all(2),
-                child: TextFormField(
-                  maxLines: 10,
-                  enabled: true,
-                  textAlign: TextAlign.center,
-                  // initialValue: listMasakans[0].bahan,
-                  decoration: const InputDecoration(
-                    labelText: 'Bahan',
-                  ),
-                )),
-            Padding(
-                padding: EdgeInsets.all(2),
-                child: TextFormField(
-                  maxLines: 10,
-                  enabled: true,
-                  textAlign: TextAlign.center,
-                  // initialValue: listMasakans[0].langkah,
-                  decoration: const InputDecoration(
-                    labelText: 'langkah',
-                  ),
-                )),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (!_formKey.currentState.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Harap Isian diperbaiki')));
-                  } else {
-                    submit();
-                  }
-                },
-                child: Text('Submit'),
+              Padding(
+                  padding: EdgeInsets.all(2),
+                  child: TextFormField(
+                    onChanged: (value) {
+                      bahan = value;
+                    },
+                    controller: _bahan,
+                    maxLines: 10,
+                    enabled: true,
+                    textAlign: TextAlign.center,
+                    // initialValue: listMasakans[0].bahan,
+                    decoration: const InputDecoration(
+                      labelText: 'Bahan',
+                    ),
+                  )),
+              Padding(
+                  padding: EdgeInsets.all(2),
+                  child: TextFormField(
+                    onChanged: (value) {
+                      langkah = value;
+                    },
+                    controller: _langkah,
+                    maxLines: 10,
+                    enabled: true,
+                    textAlign: TextAlign.center,
+                    // initialValue: listMasakans[0].langkah,
+                    decoration: const InputDecoration(
+                      labelText: 'langkah',
+                    ),
+                  )),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (!_formKey.currentState.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Harap Isian diperbaiki')));
+                    } else {
+                      submit();
+                    }
+                  },
+                  child: Text('Submit'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
