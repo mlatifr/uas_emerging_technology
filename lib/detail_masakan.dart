@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:resep_pak_latif/main.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,8 +53,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
   //meminta POST
   Future<String> fetchData() async {
     final response = await http.post(
-        Uri.parse(
-            "http://mlatifr.southeastasia.cloudapp.azure.com/emertech/uas_kuremas/get_masakan_resep.php"),
+        Uri.parse(APIurl + "get_masakan_resep.php"),
         body: {'id_masakan': widget.indexMasakan.toString()});
     if (response.statusCode == 200) {
       print("print response body : ${response.body} ${widget.indexMasakan}");

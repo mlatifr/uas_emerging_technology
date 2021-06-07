@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // String tulisan = "";
 
 String user_aktif = "";
+String APIurl = "http://mlatifr.ddns.net/emertech/uas_kuremas/";
 // bool pembuka = true;
 
 Future<String> cekLogin() async {
@@ -92,10 +93,8 @@ class _MyHomePageState extends State<MyHomePage> {
   // tahap 3 API 1
   //meminta POST
   Future<String> fetchData() async {
-    final response = await http.post(
-        Uri.parse(
-            "http://mlatifr.southeastasia.cloudapp.azure.com/emertech/uas_kuremas/get_list_masakan_nama.php"),
-        body: {});
+    final response = await http
+        .post(Uri.parse(APIurl + "get_list_masakan_nama.php"), body: {});
     if (response.statusCode == 200) {
       print("print response body : ${response.body}");
       return response.body;

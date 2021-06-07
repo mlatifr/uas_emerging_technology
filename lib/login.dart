@@ -59,7 +59,7 @@ class _LoginState extends State<Login> {
   void doLogin() async {
     final response = await http.post(
         // Uri.parse("http://ubaya.prototipe.net/daniel/login.php"),
-        Uri.parse("http://mlatifr.southeastasia.cloudapp.azure.com/emertech/uas_kuremas/login.php"),
+        Uri.parse(APIurl + "login.php"),
         body: {'user_name': user_id, 'user_password': password});
     if (response.statusCode == 200) {
       Map json = jsonDecode(response.body);
