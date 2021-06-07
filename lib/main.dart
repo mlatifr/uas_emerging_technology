@@ -255,7 +255,7 @@ class _MyHomePageState extends State<MyHomePage> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => InpurMasakan()));
+                MaterialPageRoute(builder: (context) => InputMasakan()));
           },
           child: const Icon(Icons.add_circle),
           backgroundColor: Colors.blue,
