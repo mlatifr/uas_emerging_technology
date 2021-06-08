@@ -105,10 +105,10 @@ class _DetailMasakanState extends State<DetailMasakan> {
     }
   }
 
-  List lisstKomentar = [];
+  List listKomentar = [];
   // tahap 2 API 1
   bacaDataKomentar() {
-    if (lisstKomentar.isNotEmpty) listMasakans.clear();
+    if (listKomentar.isNotEmpty) listMasakans.clear();
     Future<String> data = fetchDataKomentar();
     data.then((value) {
       //Mengubah json menjadi Array
@@ -116,7 +116,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
       // print("print value API 1 = ${value} \n \n");
       for (var i in json['data']) {
         Komentar kmntr = Komentar.fromJson(i);
-        lisstKomentar.add(kmntr);
+        listKomentar.add(kmntr);
       }
       setState(() {});
     });
@@ -174,7 +174,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
     print("ini widget idx masakan id : ${widget.indexMasakan}");
     listMasakans.clear();
     bacaData();
-    lisstKomentar.clear();
+    listKomentar.clear();
     bacaDataKomentar();
   }
 
@@ -269,28 +269,29 @@ class _DetailMasakanState extends State<DetailMasakan> {
             ),
             ExpansionTile(
               title: Text(
-                'Komentar : ${lisstKomentar.length}',
+                'Komentar : ${listKomentar.length}',
                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
               ),
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery.of(context).size.width * 0.7,
                   color: Colors.green,
                   child: ListView.builder(
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(8),
-                      itemCount: lisstKomentar.length,
+                      itemCount: listKomentar.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
-                          width: MediaQuery.of(context).size.width * 0.8,
+                          // width: MediaQuery.of(context).size.width * 0.8,
                           color: Colors.white,
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                             child: TextFormField(
                               maxLines: null,
                               enabled: false,
                               textAlign: TextAlign.justify,
-                              initialValue: "${lisstKomentar[index].komentar}",
+                              initialValue:
+                                  "${listKomentar[index].id_user_komentar}:\n${listKomentar[index].komentar}",
                               decoration: const InputDecoration(
                                 labelText: 'Komentar',
                               ),
