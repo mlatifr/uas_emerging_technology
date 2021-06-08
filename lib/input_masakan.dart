@@ -107,6 +107,9 @@ class _InputMasakanState extends State<InputMasakan> {
       if (json['result'] == 'success') {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Sukses mengubah Data')));
+        Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MyApp()))
+            .then(onGoBack);
       }
     } else {
       throw Exception('Failed to read API');
