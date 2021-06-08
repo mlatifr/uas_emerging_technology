@@ -99,37 +99,40 @@ class _DetailMasakanState extends State<DetailMasakan> {
               color: Colors.blue,
             ),
             Padding(
-                padding: EdgeInsets.all(10),
-                child: TextFormField(
-                  enabled: false,
-                  textAlign: TextAlign.center,
-                  initialValue: widget.namaMasakan,
-                  decoration: const InputDecoration(
-                    labelText: 'Nama',
-                  ),
-                )),
+              padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+              child: TextFormField(
+                enabled: false,
+                textAlign: TextAlign.center,
+                initialValue: widget.namaMasakan,
+                decoration: const InputDecoration(
+                  labelText: 'Nama',
+                ),
+              ),
+            ),
             Padding(
-                padding: EdgeInsets.all(10),
-                child: TextFormField(
-                  maxLines: 10,
-                  enabled: false,
-                  textAlign: TextAlign.center,
-                  initialValue: listMasakans[0].bahan,
-                  decoration: const InputDecoration(
-                    labelText: 'Bahan',
-                  ),
-                )),
+              padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+              child: TextFormField(
+                maxLines: listMasakans[0].bahan.length,
+                enabled: false,
+                textAlign: TextAlign.justify,
+                initialValue: listMasakans[0].bahan,
+                decoration: const InputDecoration(
+                  labelText: 'Bahan',
+                ),
+              ),
+            ),
             Padding(
-                padding: EdgeInsets.all(10),
-                child: TextFormField(
-                  maxLines: 10,
-                  enabled: false,
-                  textAlign: TextAlign.center,
-                  initialValue: listMasakans[0].langkah,
-                  decoration: const InputDecoration(
-                    labelText: 'langkah',
-                  ),
-                )),
+              padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+              child: TextFormField(
+                maxLines: 10,
+                enabled: false,
+                textAlign: TextAlign.justify,
+                initialValue: listMasakans[0].langkah,
+                decoration: const InputDecoration(
+                  labelText: 'langkah',
+                ),
+              ),
+            ),
           ],
         )));
   }

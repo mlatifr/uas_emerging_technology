@@ -52,8 +52,8 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    user_id = 'admin';
-    password = 'admin';
+    user_id = 'guest';
+    password = 'guest';
   }
 
   void doLogin() async {
@@ -67,9 +67,13 @@ class _LoginState extends State<Login> {
         final prefs = await SharedPreferences.getInstance();
         prefs.setString("user_id", user_id);
         prefs.setString("user_name", json['user_name']);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(response.body)));
         main();
       } else {
         setState(() {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(response.body)));
           error_login = "User id atau password error: " + json.toString();
         });
       }
@@ -91,13 +95,13 @@ class _LoginState extends State<Login> {
             Padding(
               padding: EdgeInsets.all(10),
               child: TextFormField(
-                initialValue: 'admin',
+                initialValue: 'guest',
                 onChanged: (value) {
                   user_id = value;
                 },
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Email',
+                    labelText: 'ID: admin',
                     hintText: 'Enter valid email id as abc@gmail.com'),
               ),
             ),
@@ -105,7 +109,7 @@ class _LoginState extends State<Login> {
               padding: EdgeInsets.all(10),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextFormField(
-                initialValue: 'admin',
+                initialValue: 'guest',
                 onChanged: (value) {
                   password = value;
                 },
@@ -127,6 +131,8 @@ class _LoginState extends State<Login> {
                       borderRadius: BorderRadius.circular(20)),
                   child: TextButton(
                     onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("id: $user_id | passwrod: $password")));
                       doLogin();
                     },
                     child: Text(
