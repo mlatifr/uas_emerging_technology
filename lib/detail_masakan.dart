@@ -73,11 +73,11 @@ class _DetailMasakanState extends State<DetailMasakan> {
       }
       setState(() {});
 
-      print('respone 2 body: ${komentar_id}');
+      // print('respone 2 body: ${komentar_id}');
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(response2.body)));
     }
-    print('cek parameter');
+    // print('cek parameter');
     // print("$id_masakan_baru ${prefs.getString('user_id')} $_bahan $_langkah");
 
     final response = await http
@@ -88,9 +88,9 @@ class _DetailMasakanState extends State<DetailMasakan> {
       'komentar_id': komentar_id.toString(),
     });
     if (response.statusCode == 200) {
-      print(response.body);
-      print(
-          ' \n ${widget.indexMasakan}\n ${prefs.getString('user_id')}\n ${komentar_id}');
+      // print(response.body);
+      // print(
+      //     ' \n ${widget.indexMasakan}\n ${prefs.getString('user_id')}\n ${komentar_id}');
       Map json = jsonDecode(response.body);
       if (json['result'] == 'success') {
         ScaffoldMessenger.of(context)
@@ -129,7 +129,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
         Uri.parse(APIurl + "get_list_masakan_resep_komentar.php"),
         body: {'id': widget.indexMasakan.toString()});
     if (response.statusCode == 200) {
-      print("print response body : ${response.body} ${widget.indexMasakan}");
+      // print("print response body : ${response.body} ${widget.indexMasakan}");
       return response.body;
     } else {
       throw Exception('Failed to read API');
@@ -160,7 +160,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
         Uri.parse(APIurl + "get_masakan_resep.php"),
         body: {'id_masakan': widget.indexMasakan.toString()});
     if (response.statusCode == 200) {
-      print("print response body : ${response.body} ${widget.indexMasakan}");
+      // print("print response body : ${response.body} ${widget.indexMasakan}");
       return response.body;
     } else {
       throw Exception('Failed to read API');
@@ -171,7 +171,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
   // untuk membaca data diawal build page nya
   void initState() {
     super.initState();
-    print("ini widget idx masakan id : ${widget.indexMasakan}");
+    // print("ini widget idx masakan id : ${widget.indexMasakan}");
     listMasakans.clear();
     bacaData();
     listKomentar.clear();
