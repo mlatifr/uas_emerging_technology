@@ -24,6 +24,43 @@ class InputMasakan extends StatefulWidget {
 }
 
 class _InputMasakanState extends State<InputMasakan> {
+  Future onGoBack(dynamic value) {
+    print("masuk goback");
+    setState(() {
+      bacaDataNama();
+    });
+  }
+
+  bacaDataNama() {
+    List listMasakans = [];
+    if (listMasakans.isNotEmpty) listMasakans.clear();
+    Future<String> data = fetchDataNama();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      // print("print value API 1 = ${value} \n \n");
+      for (var i in json['data']) {
+        Masakan mskn = Masakan.fromJson(i);
+        listMasakans.add(mskn);
+      }
+      setState(() {});
+    });
+  }
+
+  // tahap 3 API 1
+  //meminta POST
+  Future<String> fetchDataNama() async {
+    final response = await http.post(
+        Uri.parse(APIurl + "get_list_masakan_cari_nama_bahan.php"),
+        body: {'cari': ''});
+    if (response.statusCode == 200) {
+      print("print response body : ${response.body}");
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
   int id_masakan_baru;
   File _image = null;
   void submit() async {
@@ -146,7 +183,14 @@ class _InputMasakanState extends State<InputMasakan> {
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyApp(),
+              ),
+            ).then(onGoBack);
+
+            // Navigator.pop(context);
           },
         ),
       ),
