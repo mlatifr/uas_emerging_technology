@@ -182,12 +182,28 @@ class _DetailMasakanState extends State<DetailMasakan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            //function kirim like
-          },
-          child: const Icon(Icons.favorite),
-          backgroundColor: Colors.pink,
+        floatingActionButton: Container(
+          width: 65.0,
+          height: 65.0,
+          child: FloatingActionButton(
+            onPressed: () {
+              //function kirim like
+            },
+            child: Column(
+              children: [
+                Text('  '),
+                Icon(
+                  Icons.favorite,
+                  size: 25,
+                ),
+                Text(
+                  '12',
+                  style: TextStyle(fontSize: 8),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.pink,
+          ),
         ),
         appBar: AppBar(
           elevation: 2,
@@ -253,7 +269,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
             ),
             ExpansionTile(
               title: Text(
-                'komentar',
+                'Komentar : ${lisstKomentar.length}',
                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
               ),
               children: <Widget>[
