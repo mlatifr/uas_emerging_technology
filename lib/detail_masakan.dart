@@ -21,6 +21,24 @@ class MasakanBahanLangkah {
   }
 }
 
+class Komentar {
+  int resep_masakan_id, komentar_id;
+  String id_user_komentar, komentar;
+  Komentar(
+      {this.resep_masakan_id,
+      this.id_user_komentar,
+      this.komentar_id,
+      this.komentar});
+  factory Komentar.fromJson(Map<String, dynamic> json) {
+    return new Komentar(
+      resep_masakan_id: json['resep_masakan_id'],
+      id_user_komentar: json['id_user_komentar'],
+      komentar_id: json['komentar_id'],
+      komentar: json['komentar'],
+    );
+  }
+}
+
 class DetailMasakan extends StatefulWidget {
   final namaMasakan, indexMasakan, url_masakan;
   const DetailMasakan(
@@ -32,6 +50,92 @@ class DetailMasakan extends StatefulWidget {
 }
 
 class _DetailMasakanState extends State<DetailMasakan> {
+  var komentar_id;
+  void submit() async {
+    final prefs = await SharedPreferences.getInstance();
+    // List<int> imageBytes = _image.readAsBytesSync();
+    // print(imageBytes);
+    // String base64Image = base64Encode(imageBytes);
+    // kirim foto
+    final response2 = await http.post(
+        Uri.parse(
+          APIurl + "input_id_pengomentar.php",
+        ),
+        body: {
+          'komentar': komentar,
+          'id_user_komentar': prefs.getString(
+              'user_id'), //id pembuat masakan(id yang login saat ini)
+        });
+    if (response2.statusCode == 200) {
+      Map json = jsonDecode(response2.body);
+      if (json['result'] == 'success') {
+        komentar_id = json['komentar_id'];
+      }
+      setState(() {});
+
+      print('respone 2 body: ${komentar_id}');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(response2.body)));
+    }
+    print('cek parameter');
+    // print("$id_masakan_baru ${prefs.getString('user_id')} $_bahan $_langkah");
+
+    final response = await http
+        .post(Uri.parse(APIurl + "input_get_pengomentar_resep.php"), body: {
+      'resep_masakan_id': widget.indexMasakan.toString(),
+      'resep_user_id': prefs
+          .getString('user_id'), //id pembuat masakan(id yang login saat ini)
+      'komentar_id': komentar_id.toString(),
+    });
+    if (response.statusCode == 200) {
+      print(response.body);
+      print(
+          ' \n ${widget.indexMasakan}\n ${prefs.getString('user_id')}\n ${komentar_id}');
+      Map json = jsonDecode(response.body);
+      if (json['result'] == 'success') {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('${response.body}')));
+        setState(() {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MyApp()));
+        });
+      }
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+  List lisstKomentar = [];
+  // tahap 2 API 1
+  bacaDataKomentar() {
+    if (lisstKomentar.isNotEmpty) listMasakans.clear();
+    Future<String> data = fetchDataKomentar();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      // print("print value API 1 = ${value} \n \n");
+      for (var i in json['data']) {
+        Komentar kmntr = Komentar.fromJson(i);
+        lisstKomentar.add(kmntr);
+      }
+      setState(() {});
+    });
+  }
+
+  // tahap 3 API 1
+  //meminta POST
+  Future<String> fetchDataKomentar() async {
+    final response = await http.post(
+        Uri.parse(APIurl + "get_list_masakan_resep_komentar.php"),
+        body: {'id': widget.indexMasakan.toString()});
+    if (response.statusCode == 200) {
+      print("print response body : ${response.body} ${widget.indexMasakan}");
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
   List listMasakans = [];
   // tahap 2 API 1
   bacaData() {
@@ -70,8 +174,11 @@ class _DetailMasakanState extends State<DetailMasakan> {
     print("ini widget idx masakan id : ${widget.indexMasakan}");
     listMasakans.clear();
     bacaData();
+    lisstKomentar.clear();
+    bacaDataKomentar();
   }
 
+  String komentar = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,7 +263,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
                   child: ListView.builder(
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(8),
-                      itemCount: 10,
+                      itemCount: lisstKomentar.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
                           width: MediaQuery.of(context).size.width * 0.8,
@@ -167,7 +274,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
                               maxLines: null,
                               enabled: false,
                               textAlign: TextAlign.justify,
-                              initialValue: "$index",
+                              initialValue: "${lisstKomentar[index].komentar}",
                               decoration: const InputDecoration(
                                 labelText: 'Komentar',
                               ),
@@ -188,6 +295,9 @@ class _DetailMasakanState extends State<DetailMasakan> {
                 decoration: const InputDecoration(
                   labelText: 'Tambah Komentar',
                 ),
+                onChanged: (value) {
+                  komentar = value;
+                },
               ),
             ),
             Padding(
@@ -198,7 +308,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
                   //   ScaffoldMessenger.of(context).showSnackBar(
                   //       SnackBar(content: Text('Harap Isian diperbaiki')));
                   // } else {
-                  //   submit();
+                  submit();
                   // }
                 },
                 child: Text('Submit'),
