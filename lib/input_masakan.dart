@@ -61,8 +61,8 @@ class _InputMasakanState extends State<InputMasakan> {
           'masakan_id': id_masakan_baru.toString(),
           'user_id': prefs.getString(
               'user_id'), //id pembuat masakan(id yang login saat ini)
-          'bahan': '_bahan',
-          'langkah': '_langkah'
+          'bahan': bahan,
+          'langkah': langkah,
         });
     if (response.statusCode == 200) {
       print(response.body);
