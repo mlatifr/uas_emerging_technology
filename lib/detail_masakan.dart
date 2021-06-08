@@ -75,6 +75,13 @@ class _DetailMasakanState extends State<DetailMasakan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            //function kirim like
+          },
+          child: const Icon(Icons.favorite),
+          backgroundColor: Colors.pink,
+        ),
         appBar: AppBar(
           elevation: 2,
           title: Text(
@@ -90,17 +97,15 @@ class _DetailMasakanState extends State<DetailMasakan> {
         body: SingleChildScrollView(
             child: Column(
           children: [
-            // Divider(),
             Image.network("${widget.url_masakan}",
-                // height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width),
             Divider(
-              // height: 150,
               color: Colors.blue,
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
-              child: TextFormField(
+            ExpansionTile(
+              initiallyExpanded: true,
+              title: TextFormField(
+                maxLines: null,
                 enabled: false,
                 textAlign: TextAlign.center,
                 initialValue: widget.namaMasakan,
@@ -108,29 +113,95 @@ class _DetailMasakanState extends State<DetailMasakan> {
                   labelText: 'Nama',
                 ),
               ),
+              children: <Widget>[
+                ListTile(
+                  title: Padding(
+                    padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+                    child: TextFormField(
+                      maxLines: null,
+                      enabled: false,
+                      textAlign: TextAlign.justify,
+                      initialValue: listMasakans[0].bahan,
+                      decoration: const InputDecoration(
+                        labelText: 'Bahan',
+                      ),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Padding(
+                    padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+                    child: TextFormField(
+                      maxLines: null,
+                      enabled: false,
+                      textAlign: TextAlign.justify,
+                      initialValue: listMasakans[0].langkah,
+                      decoration: const InputDecoration(
+                        labelText: 'langkah',
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            ExpansionTile(
+              title: Text(
+                'komentar',
+                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+              ),
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  color: Colors.green,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(8),
+                      itemCount: 10,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+                            child: TextFormField(
+                              maxLines: null,
+                              enabled: false,
+                              textAlign: TextAlign.justify,
+                              initialValue: "$index",
+                              decoration: const InputDecoration(
+                                labelText: 'Komentar',
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                )
+              ],
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: TextFormField(
-                maxLines: listMasakans[0].bahan.length,
-                enabled: false,
+                maxLines: null,
+                enabled: true,
                 textAlign: TextAlign.justify,
-                initialValue: listMasakans[0].bahan,
+                // initialValue: 'Isi Komentar disini',
                 decoration: const InputDecoration(
-                  labelText: 'Bahan',
+                  labelText: 'Tambah Komentar',
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
-              child: TextFormField(
-                maxLines: 10,
-                enabled: false,
-                textAlign: TextAlign.justify,
-                initialValue: listMasakans[0].langkah,
-                decoration: const InputDecoration(
-                  labelText: 'langkah',
-                ),
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // if (!_formKey.currentState.validate()) {
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //       SnackBar(content: Text('Harap Isian diperbaiki')));
+                  // } else {
+                  //   submit();
+                  // }
+                },
+                child: Text('Submit'),
               ),
             ),
           ],
