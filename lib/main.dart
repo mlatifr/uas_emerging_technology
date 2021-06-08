@@ -218,12 +218,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 children: [
                                   Text("${listMasakans[index].nama}"),
                                   Image.network(
-                                      "${listMasakans[index].url_foto}",
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.2,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.2)
+                                    "${listMasakans[index].url_foto}",
+                                    height: MediaQuery.of(context).size.height *
+                                        0.24,
+                                    width: null,
+                                  )
+                                  // width: MediaQuery.of(context).size.width *
+                                  //     0.55)
                                 ],
                               )),
                         ]));
