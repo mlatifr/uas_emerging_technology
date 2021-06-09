@@ -39,6 +39,21 @@ class Komentar {
   }
 }
 
+class Penyuka {
+  int like_id;
+  String like_id_user;
+  Penyuka({
+    this.like_id,
+    this.like_id_user,
+  });
+  factory Penyuka.fromJson(Map<String, dynamic> json) {
+    return new Penyuka(
+      like_id: json['like_id'],
+      like_id_user: json['like_id_user'],
+    );
+  }
+}
+
 class DetailMasakan extends StatefulWidget {
   final namaMasakan, indexMasakan, url_masakan;
   const DetailMasakan(
@@ -50,6 +65,61 @@ class DetailMasakan extends StatefulWidget {
 }
 
 class _DetailMasakanState extends State<DetailMasakan> {
+  int like_id;
+  String like_id_user;
+  void submitLike() async {
+    final prefs = await SharedPreferences.getInstance();
+    // List<int> imageBytes = _image.readAsBytesSync();
+    // print(imageBytes);
+    // String base64Image = base64Encode(imageBytes);
+    // kirim foto
+    final response2 = await http.post(
+        Uri.parse(
+          APIurl + "input_id_penyuka.php",
+        ),
+        body: {
+          'id_user': prefs.getString('user_id'), //id yang login saat ini
+        });
+    if (response2.statusCode == 200) {
+      Map json = jsonDecode(response2.body);
+      if (json['result'] == 'success') {
+        like_id = json['like_id'];
+        like_id_user = json['like_id_user'];
+      }
+      setState(() {});
+
+      // print('respone 2 body: ${komentar_id}');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(response2.body)));
+    }
+    // print('cek parameter');
+    // print("$id_masakan_baru ${prefs.getString('user_id')} $_bahan $_langkah");
+
+    final response = await http
+        .post(Uri.parse(APIurl + "input_get_penyuka_resep.php"), body: {
+      'resep_masakan_id': widget.indexMasakan.toString(),
+      'like_id_user': prefs
+          .getString('user_id'), //id pembuat masakan(id yang login saat ini)
+      'like_id': like_id.toString(),
+    });
+    if (response.statusCode == 200) {
+      // print(response.body);
+      // print(
+      //     ' \n ${widget.indexMasakan}\n ${prefs.getString('user_id')}\n ${komentar_id}');
+      Map json = jsonDecode(response.body);
+      if (json['result'] == 'success') {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('${response.body}')));
+        setState(() {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MyApp()));
+        });
+      }
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
   var komentar_id;
   void submit() async {
     final prefs = await SharedPreferences.getInstance();
@@ -188,6 +258,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
           child: FloatingActionButton(
             onPressed: () {
               //function kirim like
+              submitLike();
             },
             child: Column(
               children: [
