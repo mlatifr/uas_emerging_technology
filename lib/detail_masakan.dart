@@ -23,16 +23,16 @@ class MasakanBahanLangkah {
 
 class Komentar {
   int resep_masakan_id, komentar_id;
-  String id_user_komentar, komentar;
+  String user_id_komentar, komentar;
   Komentar(
       {this.resep_masakan_id,
-      this.id_user_komentar,
+      this.user_id_komentar,
       this.komentar_id,
       this.komentar});
   factory Komentar.fromJson(Map<String, dynamic> json) {
     return new Komentar(
       resep_masakan_id: json['resep_masakan_id'],
-      id_user_komentar: json['id_user_komentar'],
+      user_id_komentar: json['user_id_komentar'],
       komentar_id: json['komentar_id'],
       komentar: json['komentar'],
     );
@@ -123,17 +123,13 @@ class _DetailMasakanState extends State<DetailMasakan> {
   var komentar_id;
   void submit() async {
     final prefs = await SharedPreferences.getInstance();
-    // List<int> imageBytes = _image.readAsBytesSync();
-    // print(imageBytes);
-    // String base64Image = base64Encode(imageBytes);
-    // kirim foto
     final response2 = await http.post(
         Uri.parse(
           APIurl + "input_id_pengomentar.php",
         ),
         body: {
           'komentar': komentar,
-          'id_user_komentar': prefs.getString(
+          'user_id_komentar': prefs.getString(
               'user_id'), //id pembuat masakan(id yang login saat ini)
         });
     if (response2.statusCode == 200) {
@@ -143,7 +139,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
       }
       setState(() {});
 
-      // print('respone 2 body: ${komentar_id}');
+      print('respone 2 body: ${komentar_id}');
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(response2.body)));
     }
@@ -199,7 +195,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
         Uri.parse(APIurl + "get_list_masakan_resep_komentar.php"),
         body: {'id': widget.indexMasakan.toString()});
     if (response.statusCode == 200) {
-      // print("print response body : ${response.body} ${widget.indexMasakan}");
+      print("print response body : ${response.body} ${widget.indexMasakan}");
       return response.body;
     } else {
       throw Exception('Failed to read API');
@@ -362,7 +358,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
                               enabled: false,
                               textAlign: TextAlign.justify,
                               initialValue:
-                                  "${listKomentar[index].id_user_komentar}:\n${listKomentar[index].komentar}",
+                                  "${listKomentar[index].user_id_komentar}:\n${listKomentar[index].komentar}",
                               decoration: const InputDecoration(
                                 labelText: 'Komentar',
                               ),
