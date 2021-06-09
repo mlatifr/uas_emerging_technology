@@ -40,14 +40,12 @@ class Komentar {
 }
 
 class Penyuka {
-  int like_id;
+  int resep_masakan_id, like_id;
   String like_id_user;
-  Penyuka({
-    this.like_id,
-    this.like_id_user,
-  });
+  Penyuka({this.resep_masakan_id, this.like_id, this.like_id_user});
   factory Penyuka.fromJson(Map<String, dynamic> json) {
     return new Penyuka(
+      resep_masakan_id: json['resep_masakan_id'],
       like_id: json['like_id'],
       like_id_user: json['like_id_user'],
     );
@@ -171,6 +169,36 @@ class _DetailMasakanState extends State<DetailMasakan> {
     }
   }
 
+  List listPenyukas = [];
+  // tahap 2 API 1
+  bacaDataPenyuka() {
+    if (listPenyukas.isNotEmpty) listPenyukas.clear();
+    Future<String> data = fetchDataPenyuka();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      for (var i in json['data']) {
+        Penyuka pnyka = Penyuka.fromJson(i);
+        listPenyukas.add(pnyka);
+      }
+      setState(() {});
+    });
+  }
+
+  // tahap 3 API 1
+  //meminta POST
+  Future<String> fetchDataPenyuka() async {
+    final response = await http.post(
+        Uri.parse(APIurl + "get_list_penyuka_by_id_makanan.php"),
+        body: {'resep_masakan_id': widget.indexMasakan.toString()});
+    if (response.statusCode == 200) {
+      // print("print response body : ${response.body} ${widget.indexMasakan}");
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
   List listKomentar = [];
   // tahap 2 API 1
   bacaDataKomentar() {
@@ -242,6 +270,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
     bacaData();
     listKomentar.clear();
     bacaDataKomentar();
+    bacaDataPenyuka();
   }
 
   String komentar = "";
@@ -255,6 +284,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
             onPressed: () {
               //function kirim like
               submitLike();
+              bacaDataPenyuka();
             },
             child: Column(
               children: [
@@ -264,7 +294,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
                   size: 25,
                 ),
                 Text(
-                  '12',
+                  'suka: ${listPenyukas.length}',
                   style: TextStyle(fontSize: 8),
                 ),
               ],
@@ -336,7 +366,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
             ),
             ExpansionTile(
               title: Text(
-                'Komentar : ${listKomentar.length}',
+                'Komentar : ${listKomentar.length}  | Suka ${listPenyukas.length}',
                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
               ),
               children: <Widget>[

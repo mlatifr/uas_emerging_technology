@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final response = await http
         .post(Uri.parse(APIurl + "get_list_masakan_nama.php"), body: {});
     if (response.statusCode == 200) {
-      print("print response body : ${response.body}");
+      // print("print response body : ${response.body}");
       return response.body;
     } else {
       throw Exception('Failed to read API');
@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Uri.parse(APIurl + "get_list_masakan_cari_nama_bahan.php"),
         body: {'cari': _txtcari});
     if (response.statusCode == 200) {
-      print("print response body : ${response.body}");
+      // print("print response body : ${response.body}");
       return response.body;
     } else {
       throw Exception('Failed to read API');
@@ -181,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
           onFieldSubmitted: (value) {
             _txtcari = value;
             bacaDataNama();
-            print(_txtcari);
+            // print(_txtcari);
           },
         ),
         ListView(
