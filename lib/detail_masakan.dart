@@ -139,7 +139,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
       }
       setState(() {});
 
-      print('respone 2 body: ${komentar_id}');
+      // print('respone 2 body: ${komentar_id}');
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(response2.body)));
     }
@@ -195,7 +195,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
         Uri.parse(APIurl + "get_list_masakan_resep_komentar.php"),
         body: {'id': widget.indexMasakan.toString()});
     if (response.statusCode == 200) {
-      print("print response body : ${response.body} ${widget.indexMasakan}");
+      // print("print response body : ${response.body} ${widget.indexMasakan}");
       return response.body;
     } else {
       throw Exception('Failed to read API');
