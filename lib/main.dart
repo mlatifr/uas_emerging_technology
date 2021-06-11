@@ -8,8 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 // String tulisan = "";
 
 String user_aktif = "";
+String APIurl;
 // String APIurl = "http://192.168.1.7/emertech/uas_kuremas/";
-String APIurl = "http://mlatifr.ddns.net/emertech/uas_kuremas/";
+// String APIurl = "http://mlatifr.ddns.net/emertech/uas_kuremas/";
+
+// String APIurl =
+//     "http://mlatifr.southeastasia.cloudapp.azure.com/emertech/uas_kuremas/";
+
 // bool pembuka = true;
 
 Future<String> cekLogin() async {

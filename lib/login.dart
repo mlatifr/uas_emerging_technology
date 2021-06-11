@@ -133,10 +133,35 @@ class _LoginState extends State<Login> {
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("id: $user_id | passwrod: $password")));
+
+                      APIurl =
+                          "http://mlatifr.southeastasia.cloudapp.azure.com/emertech/uas_kuremas/";
                       doLogin();
                     },
                     child: Text(
-                      'Login',
+                      'Login Server',
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  ),
+                )),
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: Container(
+                  height: 50,
+                  width: 300,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: TextButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("id: $user_id | passwrod: $password")));
+
+                      APIurl = "http://192.168.1.7/emertech/uas_kuremas/";
+                      doLogin();
+                    },
+                    child: Text(
+                      'Login Local',
                       style: TextStyle(color: Colors.white, fontSize: 25),
                     ),
                   ),
