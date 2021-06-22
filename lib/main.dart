@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 String user_aktif = "";
 String APIurl;
-// String APIurl = "http://192.168.1.7/emertech/uas_kuremas/";
+// String APIurl = "http://ubaya.prototipe.net/emertech160416073/emertech/uas_kuremas/";
 // String APIurl = "http://mlatifr.ddns.net/emertech/uas_kuremas/";
 
 // String APIurl =
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<String> fetchData() async {
     final response = await http
         .post(Uri.parse(APIurl + "get_list_masakan_nama.php"), body: {});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 500) {
       // print("print response body : ${response.body}");
       return response.body;
     } else {
@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final response = await http.post(
         Uri.parse(APIurl + "get_list_masakan_cari_nama_bahan.php"),
         body: {'cari': _txtcari});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 500) {
       // print("print response body : ${response.body}");
       return response.body;
     } else {
@@ -176,9 +176,14 @@ class _MyHomePageState extends State<MyHomePage> {
       children: [
         TextFormField(
           decoration: const InputDecoration(
-            icon: Icon(Icons.search),
-            labelText: 'Resep mengandung kata:',
-          ),
+              icon: Icon(
+                Icons.search,
+                color: Colors.deepOrangeAccent,
+              ),
+              labelText: ('Resep mengandung kata:'),
+              labelStyle: TextStyle(
+                color: Colors.deepOrangeAccent,
+              )),
           onChanged: (value) {
             _txtcari = value;
             bacaDataNama();
@@ -194,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.739,
-              color: Colors.green,
+              // color: Colors.green,
               child: GridView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
@@ -203,6 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       crossAxisCount: 2),
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
+                        color: Colors.orange[50],
                         elevation: 4,
                         margin: EdgeInsets.all(4),
                         child: Column(children: <Widget>[
@@ -254,11 +260,20 @@ class _MyHomePageState extends State<MyHomePage> {
     return DefaultTabController(
       length: 1,
       child: Scaffold(
+        backgroundColor: Colors.orange[50],
         appBar: AppBar(
+          backgroundColor: Colors.orange[900],
           title: Text("Kumpulan Resep Pak Latif"),
           bottom: TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.fastfood_outlined)),
+              Tab(
+                icon: IconButton(
+                  icon: new Icon(Icons.refresh),
+                  onPressed: () {
+                    bacaData();
+                  },
+                ),
+              ),
               // Tab(icon: Icon(Icons.layers_clear)),
               // Tab(icon: Icon(Icons.layers_clear)),
               // Tab(icon: Icon(Icons.layers_clear)),
@@ -279,7 +294,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 MaterialPageRoute(builder: (context) => InputMasakan()));
           },
           child: const Icon(Icons.add_circle),
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.orange[900],
         ),
       ),
     );

@@ -53,7 +53,7 @@ class _InputMasakanState extends State<InputMasakan> {
     final response = await http.post(
         Uri.parse(APIurl + "get_list_masakan_cari_nama_bahan.php"),
         body: {'cari': ''});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 500) {
       print("print response body : ${response.body}");
       return response.body;
     } else {
@@ -77,11 +77,12 @@ class _InputMasakanState extends State<InputMasakan> {
           'nama_masakan': namaMakanan,
           'img': base64Image,
         });
-    if (response2.statusCode == 200) {
+    if (response2.statusCode == 200 || response2.statusCode == 500) {
       Map json = jsonDecode(response2.body);
       if (json['result'] == 'success') {
         id_masakan_baru = json['id_masakan_baru'];
-      }
+      } else
+        (print(response2.body.toString()));
       setState(() {});
 
       print('respone 2 body: ${id_masakan_baru}');
@@ -101,7 +102,7 @@ class _InputMasakanState extends State<InputMasakan> {
           'bahan': bahan,
           'langkah': langkah,
         });
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 500) {
       print(response.body);
       Map json = jsonDecode(response.body);
       if (json['result'] == 'success') {

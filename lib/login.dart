@@ -61,7 +61,7 @@ class _LoginState extends State<Login> {
         // Uri.parse("http://ubaya.prototipe.net/daniel/login.php"),
         Uri.parse(APIurl + "login.php"),
         body: {'user_name': user_id, 'user_password': password});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 500) {
       Map json = jsonDecode(response.body);
       if (json['result'] == 'success') {
         final prefs = await SharedPreferences.getInstance();
@@ -78,7 +78,7 @@ class _LoginState extends State<Login> {
         });
       }
     } else {
-      throw Exception('Failed to read API');
+      throw Exception('Failed to read APIurl = $APIurl /n ${response.body}');
     }
   }
 
@@ -121,6 +121,29 @@ class _LoginState extends State<Login> {
               ),
             ),
             Padding(padding: EdgeInsets.all(10), child: Text(error_login)),
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: Container(
+                  height: 50,
+                  width: 300,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: TextButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("id: $user_id | passwrod: $password")));
+
+                      APIurl =
+                          "http://ubaya.prototipe.net/emertech160416073/emertech/uas_kuremas/";
+                      doLogin();
+                    },
+                    child: Text(
+                      'Server Ubaya',
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  ),
+                )),
             Padding(
                 padding: EdgeInsets.all(10),
                 child: Container(

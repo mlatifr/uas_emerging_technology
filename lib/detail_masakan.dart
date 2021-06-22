@@ -316,6 +316,7 @@ class _DetailMasakanState extends State<DetailMasakan> {
         ),
         body: SingleChildScrollView(
             child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
             Image.network("${widget.url_masakan}",
                 width: MediaQuery.of(context).size.width),
